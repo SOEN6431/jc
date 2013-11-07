@@ -224,21 +224,23 @@ public class Rooms extends JTabbedPane implements MouseListener, ChangeListener 
         if (!(e.getSource() instanceof Component))
             return;
 
-        String s = ((Component) e.getSource()).getName();
-
-        if (s.equals(CLOSE_BUTTON)) {
-            if (roomActions != null)
-                if (!roomActions.canCloseRoom(getCurrentRoomName()))
-                    return;
-            if (roomActions != null)
-                roomActions.closeRoomPressed(getCurrentRoomName());
-            closeCurrentRoom();
-        }
-
-        if (s.equals(IGNORE_BUTTON)) {
-            if (roomActions != null)
-                roomActions.ignoreUserPressed(getCurrentRoomName());
-        }
+        
+        if (roomActions != null)
+        {
+        	String s = ((Component) e.getSource()).getName();
+        	switch (s)
+        	{
+        		case CLOSE_BUTTON:
+        			if (!roomActions.canCloseRoom(getCurrentRoomName()))
+        				return;
+        			roomActions.closeRoomPressed(getCurrentRoomName());
+        			closeCurrentRoom();
+        			break;
+        			
+        		case IGNORE_BUTTON:
+        			roomActions.ignoreUserPressed(getCurrentRoomName());
+        	}
+        }       
     }
 
     // interface MouseListener
