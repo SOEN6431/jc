@@ -37,23 +37,18 @@ public class UserDetails extends Data implements Serializable {
     /**
      * Checks for age & sex values.<br>
      * Age must be an integer within 0..120<br>
-     * Sex must be an integer within 0..2*
      */
     public boolean isDataValid() {
         try {
-            lastErrorMessage = "Invalid sex value";
-            if ((Integer.valueOf(Sex) < 0) || (Integer.valueOf(Sex) > 2))
-                return false;
-
+               	
             lastErrorMessage = "Invalid age value";
-            if (!Age.equals(""))
-                if ((Integer.valueOf(Age) < 1) || (Integer.valueOf(Age) > 120))
-                    return false;
+            boolean isAgeValid = !Age.equals("") && ((Integer.valueOf(Age) > 1) && (Integer.valueOf(Age) < 120));
+            if (!isAgeValid)
+                return false;
         }
         catch (Exception e) {
             return false;
         }
-
 
         lastErrorMessage = "";
         return true;
