@@ -27,14 +27,21 @@ public class ClientScreen implements ScreenCapables,
         KeyListener,
         RoomActions,
         OnlineListActions {
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 600;
+    private static final int X = 120;
+    private static final int Y = 80;
+    private static final int MyDetails = 102;
+    private static final int UpdateDetails = 101;
+    private static final int UserDetails = 100;
     // program title
     private final String PROGRAM_TITLE = "Chat client 1.1";
 
     private final String GENERAL_ROOM = "General room";
 
     // window pos & size
-    private final Dimension WINDOW_SIZE = new Dimension(800, 600);
-    private final Point WINDOW_POS = new Point(120, 80);
+    private final Dimension WINDOW_SIZE = new Dimension(WIDTH, HEIGHT);
+    private final Point WINDOW_POS = new Point(X, Y);
 
     // Component names
     private final String SEND_BUTTON = "Send Text Button";
@@ -55,9 +62,9 @@ public class ClientScreen implements ScreenCapables,
 
 
     // data exchange flags
-    private final int flagShowUserDetails = 100; // Mesasge.InternalFlag, if == 100, means that client needs to show user details
-    private final int flagUpdateUserDetails = 101; // Message.InternalFlag. if == 101,  means that someone updates his details
-    private final int flagShowMyDetails = 102; // Mesasge.InternalFlag. if == 102, means that i need to get my details and view it
+    private final int flagShowUserDetails =UserDetails; // Mesasge.InternalFlag, if == 100, means that client needs to show user details
+    private final int flagUpdateUserDetails = UpdateDetails; // Message.InternalFlag. if == 101,  means that someone updates his details
+    private final int flagShowMyDetails = MyDetails; // Mesasge.InternalFlag. if == 102, means that i need to get my details and view it
 
 
     // object from ScreenCapables interface

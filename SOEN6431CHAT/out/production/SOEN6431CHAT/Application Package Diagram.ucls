@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.4" icons="true" automaticImage="JPEG" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <package id="1" language="java" name="com.ays.javachat.client" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/client" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="594" y="53"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="2" language="java" name="com.ays.javachat.client.manager" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/client/manager" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="593" y="174"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="3" language="java" name="com.ays.javachat.client.interfaces" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/client/interfaces" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="139" y="470"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="4" language="java" name="com.ays.javachat.client.screen" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/client/screen" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1045" y="312"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="5" language="java" name="com.ays.javachat.client.transmitter" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/client/transmitter" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="139" y="305"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="6" language="java" name="com.ays.javachat.common.datatypes" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/common/datatypes" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="593" y="696"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="7" language="java" name="com.ays.javachat.common.globalconsts" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/common/globalconsts" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1047" y="698"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="8" language="java" name="com.ays.javachat.common.messages" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/common/messages" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="140" y="689"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="9" language="java" name="com.ays.javachat.common.utils" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/common/utils" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1380" y="314"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="10" language="java" name="com.ays.javachat.server.interfaces" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/server/interfaces" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="136" y="900"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="11" language="java" name="com.ays.javachat.server.transmitter" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/server/transmitter" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="137" y="1111"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="12" language="java" name="com.ays.javachat.server.database" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/server/database" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1046" y="1113"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="13" language="java" name="com.ays.javachat.server.manager" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/server/manager" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="592" y="1263"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="14" language="java" name="com.ays.javachat.server" project="SOEN6431CHAT" 
+    file="/SOEN6431CHAT/jchat/com/ays/javachat/server" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="591" y="1389"/>    
+    <display autosize="true" stereotype="true" accessors="true"/>  
+  </package>  
+  <dependency id="15">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="16">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="17">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="18">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="19">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <dependency id="20">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <dependency id="21">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="22">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="23">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <dependency id="24">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="13"/>  
+  </dependency>  
+  <dependency id="25">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="26">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="27">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="28">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="29">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="30">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="31">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="32">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <dependency id="33">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="34">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <dependency id="35">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="36">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="37">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="38">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="12"/>  
+  </dependency>  
+  <dependency id="39">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="40">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <dependency id="41">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="42">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
