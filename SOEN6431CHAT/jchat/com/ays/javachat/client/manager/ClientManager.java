@@ -40,13 +40,8 @@ public class ClientManager implements ScreenCallback, TransmitterCallback {
 
     // here is proccessing all logic of received messages
     private void ObjectReceived(Object o) {
-        // received object not from type Message
-        // func exists
-        if (!(o instanceof Message))
-            return;
-
-        // REPLY FROM SERVER
-        if ((o instanceof ReplyLogin) ||
+    	
+    	boolean isAMessage = ((o instanceof ReplyLogin) ||
                 (o instanceof ReplyLogout) ||
                 (o instanceof ReplyRegister) ||
                 (o instanceof ReplyUnregister) ||
@@ -60,8 +55,10 @@ public class ClientManager implements ScreenCallback, TransmitterCallback {
                 (o instanceof ReplyClientText) ||
                 (o instanceof UpdateUsersList) ||
                 (o instanceof ServerNotification) ||
-                (o instanceof ServerText))
-            clientScreen.replyReceived((Message) o);
+                (o instanceof ServerText));
+    	
+    	if (isAMessage)
+    		clientScreen.replyReceived((Message) o);
     }
 
     public void exit() {

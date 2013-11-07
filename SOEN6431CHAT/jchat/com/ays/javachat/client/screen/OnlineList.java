@@ -120,28 +120,22 @@ public class OnlineList extends JScrollPane implements MouseListener, ActionList
 
     // interface MouseListener
     public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON3) {
-            popupMenu.show(e.getComponent(), e.getX(), e.getY());
-        }
-
-        if (onlineListActions == null)
-            return;
-
-        if (e.getButton() == MouseEvent.BUTTON1)
-            if (doubleClickImp == null)
-                doubleClickImp = new DoubleClickImplementor(this, DOUBLE_CLICK_DELAY, e);
-            else {
-                doubleClickImp.stop();
-                doubleClickImp = null;
-                String s = getSelectedItem();
-                if (s != null)
-                    onlineListActions.userDoubleSelected(s);
-            }
-
-        if (guiList.getSelectedIndex() < 0)
-            return;
-
-        //onlineListActions.userDoubleClicked( ( String )listModel.getElementAt( guiList.getSelectedIndex() ) ) ;
+    	switch (e.getButton())
+    	{
+    		case MouseEvent.BUTTON1:	
+    			if (doubleClickImp == null)
+                    doubleClickImp = new DoubleClickImplementor(this, DOUBLE_CLICK_DELAY, e);
+                else {
+                    doubleClickImp.stop();
+                    doubleClickImp = null;                   
+                    if (getSelectedItem() != null)
+                        onlineListActions.userDoubleSelected(getSelectedItem());
+                }
+    			break;
+    		
+    		case MouseEvent.BUTTON3:
+    			popupMenu.show(e.getComponent(), e.getX(), e.getY());
+    	}
     }
 
     // interface MouseListener
