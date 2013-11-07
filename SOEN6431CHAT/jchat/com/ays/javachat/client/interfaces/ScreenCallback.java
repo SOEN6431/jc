@@ -27,11 +27,6 @@ public interface ScreenCallback {
     public void connect(IPPort ipport);
 
     /**
-     * Send disconnect request to the server *
-     */
-    public void disconnect();
-
-    /**
      * Sends request to exit from program *
      */
     public void exit(); // exits from application

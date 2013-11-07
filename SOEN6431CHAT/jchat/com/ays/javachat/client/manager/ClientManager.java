@@ -29,10 +29,6 @@ public class ClientManager implements ScreenCallback, TransmitterCallback {
         clientScreen.replyReceived(reply);
     }
 
-    public void disconnect() {
-    }
-
-
     public synchronized void receiveObject(Object o) {
         ObjectReceived(o);
     }
