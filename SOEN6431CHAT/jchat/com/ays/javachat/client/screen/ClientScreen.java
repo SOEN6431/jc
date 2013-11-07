@@ -99,7 +99,6 @@ public class ClientScreen implements ScreenCapables,
     public void start() {
         show();
         init_tabs();
-      //  init_list();
 
         doConnect();
     }
@@ -107,13 +106,6 @@ public class ClientScreen implements ScreenCapables,
     private void init_tabs() {
         tabs.openRoom(GENERAL_ROOM, false);
     }
-
-   // private void init_list() {
-        //list.addUser( "a", new UserDetails() ) ;
-        //list.removeAll() ;
-
-        //UsersList users = new UsersList() ;
-    //}
 
 
     ///////////////////////////////////////////////////////////////////////////
