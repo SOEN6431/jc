@@ -24,12 +24,9 @@ public class ThreadListener extends Thread {
 
 
     public void run() {
-        if (transmitterCallback == null)
-            ; // save_log() ;
-        if (inputStream == null)
-            ; // save_log() ;
+        
 
-        Object o;
+        Object otener;
         ObjectInputStream objectInputStream;
 
         try {
@@ -43,7 +40,7 @@ public class ThreadListener extends Thread {
 
         while (true) {
             try {
-                o = objectInputStream.readObject();
+            	otener = objectInputStream.readObject();
             }
             catch (Exception e) {
                 // save_log() ;
@@ -51,7 +48,7 @@ public class ThreadListener extends Thread {
                 return;
             }
 
-            transmitterCallback.receiveObject(o);
+            transmitterCallback.receiveObject(otener);
         }
     }
 }

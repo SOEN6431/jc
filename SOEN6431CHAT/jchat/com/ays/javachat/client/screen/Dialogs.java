@@ -5,6 +5,7 @@ import com.ays.javachat.common.datatypes.LoginData;
 import com.ays.javachat.common.datatypes.UserDetails;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -225,24 +226,25 @@ public class Dialogs {
 
                 String sInfo = "";
                 if (!chars2String(tf2.getPassword()).equals(chars2String(tf22.getPassword()))) {
-                    sInfo = "\n( wrong password confirmation )";
+                    sInfo = "  " + System.getProperty("line.separator")+ "  ( wrong password confirmation )";
+                    
                     bRetype = true;
                 }
 
                 if (!aLogin.isDataValid()) {
-                    sInfo = "\n( " + aLogin.getLastErrorMessage() + ")";
+                    sInfo = " " + System.getProperty("line.separator")+ "  ( " + aLogin.getLastErrorMessage() + ")";
                     bRetype = true;
                 }
 
                 if (!aDetails.isDataValid()) {
-                    sInfo = "\n( " + aDetails.getLastErrorMessage() + ")";
+                    sInfo = "    " + System.getProperty("line.separator")+ "   ( " + aDetails.getLastErrorMessage() + ")";
                     bRetype = true;
                 }
 
                 if (bRetype)
-                    if (JOptionPane.showConfirmDialog(null, "Data you have entered is invalid\nClick Yes if you want to reEnter it" + sInfo, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null) == 0)
-                        ;
-                    else
+                    if (JOptionPane.showConfirmDialog(null, "Data you have entered is invalid " + System.getProperty("line.separator")+ "  Click Yes if you want to reEnter it" + sInfo, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null) == 0){
+                   
+                    }else
                         return false;
                 else
                     return true;
@@ -357,13 +359,13 @@ public class Dialogs {
     /**
      * Displays Ignored Users list dialog. Here you can add/remove users ignored by yourself *
      */
-    public static boolean manageIgnoreUsersialog(Vector aIgnoredUsersList) {
+    public static boolean manageIgnoreUsersialog(Vector<String> aIgnoredUsersList) {
         if (aIgnoredUsersList == null)
             return false;
 
         // building login and password screen
-        final DefaultListModel listModel = new DefaultListModel();
-        final JList list = new JList(listModel);
+        final DefaultListModel<String> listModel = new DefaultListModel<String>();
+        final JList<String> list = new JList<String>(listModel);
         JScrollPane scrollPane = new JScrollPane(list);
         JButton addUser = new JButton("Add User");
         JButton removeUser = new JButton("Remove User");
@@ -407,7 +409,7 @@ public class Dialogs {
         if (createSelf().showDialog("Ignroed users", panel, buttons)) {
             aIgnoredUsersList.clear();
             for (int i = 0; i < listModel.size(); i++)
-                aIgnoredUsersList.add((String) listModel.getElementAt(i));
+                aIgnoredUsersList.add(listModel.getElementAt(i));
 
             return true;
         }

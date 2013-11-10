@@ -86,7 +86,6 @@ public class ServerTransmitter extends Thread implements TransmitterCapables {
 
     public void run() {
         if (transmitterCallback == null)
-            ; // save_log() ;
 
         if (socket == null)
             return;

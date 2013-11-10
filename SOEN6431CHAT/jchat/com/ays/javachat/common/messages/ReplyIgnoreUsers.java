@@ -12,7 +12,7 @@ public class ReplyIgnoreUsers extends IgnoreUsers implements Serializable {
      */
     public int Status;
 
-    public ReplyIgnoreUsers(Vector aIgnoredUsersList, boolean aOverwriteExistingList, int aStatus) {
+    public ReplyIgnoreUsers(Vector<String> aIgnoredUsersList, boolean aOverwriteExistingList, int aStatus) {
         super(aIgnoredUsersList, aOverwriteExistingList);
         Status = aStatus;
     }

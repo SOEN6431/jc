@@ -50,12 +50,12 @@ public class IPPort extends Data implements Serializable {
     }
 
     private boolean loadFromFile(String aFileName) {
-        Properties p = new Properties();
+        Properties pProperty = new Properties();
 
         try {
-            p.load(new FileInputStream(aFileName));
-            IP = p.getProperty("IP");
-            Port = Integer.valueOf(p.getProperty("Port"));
+            pProperty.load(new FileInputStream(aFileName));
+            IP = pProperty.getProperty("IP");
+            Port = Integer.valueOf(pProperty.getProperty("Port"));
         }
         catch (Exception e) {
             return false;
@@ -65,12 +65,12 @@ public class IPPort extends Data implements Serializable {
     }
 
     private boolean saveToFile(String aFileName) {
-        Properties p = new Properties();
+        Properties pProperty = new Properties();
 
         try {
-            p.setProperty("IP", IP);
-            p.setProperty("Port", String.valueOf(Port));
-            p.store(new FileOutputStream(aFileName), null);
+            pProperty.setProperty("IP", IP);
+            pProperty.setProperty("Port", String.valueOf(Port));
+            pProperty.store(new FileOutputStream(aFileName), null);
         }
         catch (Exception e) {
             return false;

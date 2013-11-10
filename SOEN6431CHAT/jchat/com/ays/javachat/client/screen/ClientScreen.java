@@ -11,6 +11,7 @@ import com.ays.javachat.common.messages.*;
 import static com.ays.javachat.common.utils.StringUtils.isEmpty;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
@@ -77,7 +78,7 @@ public class ClientScreen implements ScreenCapables,
     JTextField tf = new JTextField();
     JButton send = new JButton("Send");
     JLabel statusBarLabel = new JLabel("Ready");
-    JFrame f = new JFrame();
+    JFrame fframe = new JFrame();
     JPanel MainPanel = new JPanel(new GridBagLayout());
     JPopupMenu popupMenu = new JPopupMenu();
 
@@ -120,64 +121,64 @@ public class ClientScreen implements ScreenCapables,
     // screen building functions
     ///////////////////////////////////////////////////////////////////////////
     private JPanel getBorderPanel() {
-        JPanel p = new JPanel();
+        JPanel panl = new JPanel();
         BorderLayout bl = new BorderLayout();
         bl.setVgap(5);
         bl.setHgap(5);
-        p.setLayout(bl);
-        p.add(new JPanel(), BorderLayout.SOUTH);
-        p.add(new JPanel(), BorderLayout.WEST);
-        p.add(new JPanel(), BorderLayout.NORTH);
-        p.add(new JPanel(), BorderLayout.EAST);
-        return p;
+        panl.setLayout(bl);
+        panl.add(new JPanel(), BorderLayout.SOUTH);
+        panl.add(new JPanel(), BorderLayout.WEST);
+        panl.add(new JPanel(), BorderLayout.NORTH);
+        panl.add(new JPanel(), BorderLayout.EAST);
+        return panl;
     }
 
     private JPanel getFlowPanel() {
-        JPanel p = new JPanel();
+        JPanel panl = new JPanel();
         FlowLayout fl = new FlowLayout();
         fl.setVgap(5);
         fl.setHgap(5);
-        p.setLayout(fl);
-        return p;
+        panl.setLayout(fl);
+        return panl;
     }
 
     private void buildScreen() {
         statusBarLabel.setOpaque(true);
 
-        GridBagConstraints c = new GridBagConstraints();
+        GridBagConstraints cConstraint = new GridBagConstraints();
 
-        JPanel p;
+        JPanel panl;
 
-        c.fill = GridBagConstraints.BOTH;
+        cConstraint.fill = GridBagConstraints.BOTH;
 
-        c.weightx = 0.8;
-        c.weighty = 0.8;
-        c.gridwidth = GridBagConstraints.RELATIVE;
-        p = getBorderPanel();
-        p.add(tabs, BorderLayout.CENTER);
-        p.add(rooms, BorderLayout.NORTH);
-        MainPanel.add(p, c);
+        cConstraint.weightx = 0.8;
+        cConstraint.weighty = 0.8;
+        cConstraint.gridwidth = GridBagConstraints.RELATIVE;
+        panl = getBorderPanel();
+        panl.add(tabs, BorderLayout.CENTER);
+        panl.add(rooms, BorderLayout.NORTH);
+        MainPanel.add(panl, cConstraint);
 
-        c.weightx = 0.2;
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        p = getBorderPanel();
-        p.add(list);
-        p.add(peoples, BorderLayout.NORTH);
-        MainPanel.add(p, c);
+        cConstraint.weightx = 0.2;
+        cConstraint.gridwidth = GridBagConstraints.REMAINDER;
+        panl = getBorderPanel();
+        panl.add(list);
+        panl.add(peoples, BorderLayout.NORTH);
+        MainPanel.add(panl, cConstraint);
 
-        c.weightx = 0.8;
-        c.weighty = 0.0;
-        c.gridwidth = GridBagConstraints.RELATIVE;
-        p = getBorderPanel();
-        p.add(tf);
-        p.add(typeyourmessage, BorderLayout.NORTH);
-        MainPanel.add(p, c);
+        cConstraint.weightx = 0.8;
+        cConstraint.weighty = 0.0;
+        cConstraint.gridwidth = GridBagConstraints.RELATIVE;
+        panl = getBorderPanel();
+        panl.add(tf);
+        panl.add(typeyourmessage, BorderLayout.NORTH);
+        MainPanel.add(panl, cConstraint);
 
-        c.weightx = 0.2;
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        p = getBorderPanel();
-        p.add(send);
-        MainPanel.add(p, c);
+        cConstraint.weightx = 0.2;
+        cConstraint.gridwidth = GridBagConstraints.REMAINDER;
+        panl = getBorderPanel();
+        panl.add(send);
+        MainPanel.add(panl, cConstraint);
 
         send.setToolTipText("Send message");
     }
@@ -188,7 +189,7 @@ public class ClientScreen implements ScreenCapables,
         JMenu menu;
         JMenuItem menuItem;
 
-        f.setJMenuBar(menuBar);
+        fframe.setJMenuBar(menuBar);
 
         // File
         menu = new JMenu("File");
@@ -243,17 +244,17 @@ public class ClientScreen implements ScreenCapables,
         buildScreen();
         buildMenu();
 
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().setLayout(new BorderLayout());
-        f.getContentPane().add(new JPanel(), BorderLayout.NORTH);
-        f.getContentPane().add(new JPanel(), BorderLayout.WEST);
-        f.getContentPane().add(statusBarLabel, BorderLayout.SOUTH);
-        f.getContentPane().add(new JPanel(), BorderLayout.EAST);
-        f.getContentPane().add(MainPanel, BorderLayout.CENTER);
-        f.setTitle(PROGRAM_TITLE);
-        f.setLocation(WINDOW_POS);
-        f.setSize(WINDOW_SIZE);
-        f.setVisible(true);
+        fframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        fframe.getContentPane().setLayout(new BorderLayout());
+        fframe.getContentPane().add(new JPanel(), BorderLayout.NORTH);
+        fframe.getContentPane().add(new JPanel(), BorderLayout.WEST);
+        fframe.getContentPane().add(statusBarLabel, BorderLayout.SOUTH);
+        fframe.getContentPane().add(new JPanel(), BorderLayout.EAST);
+        fframe.getContentPane().add(MainPanel, BorderLayout.CENTER);
+        fframe.setTitle(PROGRAM_TITLE);
+        fframe.setLocation(WINDOW_POS);
+        fframe.setSize(WINDOW_SIZE);
+        fframe.setVisible(true);
     }
 
 
@@ -301,7 +302,7 @@ public class ClientScreen implements ScreenCapables,
 
     private void doLogout() {
         sLastLoggedOnUserName = null;
-        f.setTitle(PROGRAM_TITLE);
+        fframe.setTitle(PROGRAM_TITLE);
         Logout req = new Logout();
         int iStatus = screenCallback.sendRequest(req);
 
@@ -402,7 +403,7 @@ public class ClientScreen implements ScreenCapables,
         }
     }
 
-    private void doIgnoreUsers(Vector aIgnoredUsersList, boolean aOverwriteExistingList) {
+    private void doIgnoreUsers(Vector<String> aIgnoredUsersList, boolean aOverwriteExistingList) {
         IgnoreUsers req = new IgnoreUsers(aIgnoredUsersList, aOverwriteExistingList);
         int iStatus = screenCallback.sendRequest(req);
 
@@ -497,7 +498,7 @@ public class ClientScreen implements ScreenCapables,
             statusBarLabel.setBackground(Color.red);
         } else {
             statusBarLabel.setForeground(Color.black);
-            statusBarLabel.setBackground(f.getBackground());
+            statusBarLabel.setBackground(fframe.getBackground());
         }
 
         statusBarLabel.setText(s);
@@ -582,9 +583,6 @@ public class ClientScreen implements ScreenCapables,
         if (e.getActionCommand().equals(menuEXIT))
             screenCallback.exit();
 
-        if (e.getActionCommand().equals(menuOPTIONS))
-            ;
-
         if (e.getActionCommand().equals(menuCONNECT))
             doConnect();
 
@@ -623,11 +621,11 @@ public class ClientScreen implements ScreenCapables,
             ReplyLogin reply = (ReplyLogin) message;
             if (reply.Status == Net.OK) {
                 setStatus("Logged in as a " + reply.login.UserName, 0);
-                f.setTitle(PROGRAM_TITLE + " - " + sLastLoggedOnUserName);
+                fframe.setTitle(PROGRAM_TITLE + " - " + sLastLoggedOnUserName);
                 doGetOnlineUsersList();
             } else {
                 setStatus("Failed to login as a " + reply.login.UserName, reply.Status);
-                f.setTitle(PROGRAM_TITLE);
+                fframe.setTitle(PROGRAM_TITLE);
             }
         }
 
@@ -643,8 +641,9 @@ public class ClientScreen implements ScreenCapables,
         // ReplyClientText
         if (message instanceof ReplyClientText) {
             ReplyClientText reply = (ReplyClientText) message;
-            if (reply.Status == Net.OK)
-                ;
+            if (reply.Status == Net.OK){
+            	
+            }                
             else
                 tabs.addTextToCurrentRoom("Failed to send text. " + Net.describeMessage(reply.Status), true);//setStatus(  ) ;
         }
@@ -768,7 +767,7 @@ public class ClientScreen implements ScreenCapables,
         if (aUserName == null)
             return;
 
-        Vector v = new Vector();
+        Vector<String> v = new Vector<String>();
         v.addElement(aUserName);
         doIgnoreUsers(v, false);
     }

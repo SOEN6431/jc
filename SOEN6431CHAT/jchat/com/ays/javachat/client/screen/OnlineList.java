@@ -6,6 +6,7 @@ import com.ays.javachat.common.datatypes.UserDetails;
 import com.ays.javachat.common.utils.StringUtils;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,9 +25,9 @@ public class OnlineList extends JScrollPane implements MouseListener, ActionList
     private final String popupOpenPrivateRoom = "Private Chat";
     private final String popupIgnoreUser = "Ignore User";
 
-    private Hashtable onlineList = new Hashtable();
-    private JList guiList = new JList();
-    private DefaultListModel listModel = new DefaultListModel();
+    private Hashtable<String, UserDetails> onlineList = new Hashtable<String, UserDetails>();
+    private JList<String> guiList = new JList<String>();
+    private DefaultListModel<String> listModel = new DefaultListModel<String>();
 
     private JPopupMenu popupMenu = new JPopupMenu();
 
@@ -115,7 +116,7 @@ public class OnlineList extends JScrollPane implements MouseListener, ActionList
         int iIndex = guiList.getSelectedIndex();
         if (iIndex < 0)
             return null;
-        return (String) (listModel.getElementAt(iIndex));
+        return (listModel.getElementAt(iIndex));
     }
 
     // interface MouseListener
@@ -133,9 +134,9 @@ public class OnlineList extends JScrollPane implements MouseListener, ActionList
             else {
                 doubleClickImp.stop();
                 doubleClickImp = null;
-                String s = getSelectedItem();
-                if (s != null)
-                    onlineListActions.userDoubleSelected(s);
+                String sstring = getSelectedItem();
+                if (sstring != null)
+                    onlineListActions.userDoubleSelected(sstring);
             }
 
         if (guiList.getSelectedIndex() < 0)
@@ -162,21 +163,21 @@ public class OnlineList extends JScrollPane implements MouseListener, ActionList
 
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals(popupShowUserDetails)) {
-            String s = getSelectedItem();
-            if (s != null)
-                onlineListActions.showUserDetails(s);
+            String sstring = getSelectedItem();
+            if (sstring != null)
+                onlineListActions.showUserDetails(sstring);
         }
 
         if (e.getActionCommand().equals(popupOpenPrivateRoom)) {
-            String s = getSelectedItem();
-            if (s != null)
-                onlineListActions.userDoubleSelected(s);
+            String sstring = getSelectedItem();
+            if (sstring != null)
+                onlineListActions.userDoubleSelected(sstring);
         }
 
         if (e.getActionCommand().equals(popupIgnoreUser)) {
-            String s = getSelectedItem();
-            if (s != null)
-                onlineListActions.ignoreUser(s);
+            String sstring = getSelectedItem();
+            if (sstring != null)
+                onlineListActions.ignoreUser(sstring);
         }
 
     }

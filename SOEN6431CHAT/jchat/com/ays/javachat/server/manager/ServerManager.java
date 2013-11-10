@@ -18,7 +18,7 @@ import java.util.Vector;
  * See ConnectionsListenerCallback, TransmitterCallback  for more information *
  */
 public class ServerManager implements ConnectionsListenerCallback, TransmitterCallback {
-    private Vector clients = new Vector();
+    private Vector<ServerTransmitter> clients = new Vector<ServerTransmitter>();
     private ConnectionsListener connectionsListener;
     private ServerDatabase serverDatabase;
 
@@ -63,7 +63,7 @@ public class ServerManager implements ConnectionsListenerCallback, TransmitterCa
             // checking if user another user logged in with this user name
             ServerTransmitter transmitter;
             for (int i = 0; i < clients.size(); i++) {
-                transmitter = (ServerTransmitter) clients.elementAt(i);
+                transmitter = clients.elementAt(i);
                 if (transmitter.getUserName() != null)
                     if (transmitter.getUserName().equals(msg.login.UserName)) {
                         reply.Status = Net.SOMEONE_LOGGEDIN_ASIT;
@@ -91,7 +91,7 @@ public class ServerManager implements ConnectionsListenerCallback, TransmitterCa
             // notifying all clients about new login
             UpdateUsersList updateUsersList = new UpdateUsersList(t.getUserName(), Net.USER_JOINED);
             for (int i = 0; i < clients.size(); i++) {
-                transmitter = (ServerTransmitter) clients.elementAt(i);
+                transmitter = clients.elementAt(i);
                 if (transmitter.getUserName() != null)
                     if (!transmitter.getUserName().equals(t.getUserName()))
                         transmitter.sendObject(updateUsersList);
@@ -118,7 +118,7 @@ public class ServerManager implements ConnectionsListenerCallback, TransmitterCa
             ServerTransmitter transmitter;
             UpdateUsersList updateUsersList = new UpdateUsersList(t.getUserName(), Net.USER_LEFT);
             for (int i = 0; i < clients.size(); i++) {
-                transmitter = (ServerTransmitter) clients.elementAt(i);
+                transmitter = clients.elementAt(i);
                 if (transmitter.getUserName() != null)
                     transmitter.sendObject(updateUsersList);
             }
@@ -232,14 +232,14 @@ public class ServerManager implements ConnectionsListenerCallback, TransmitterCa
             // filling online users list array
             int iSize = 0;
             for (int i = 0; i < clients.size(); i++)
-                if (((ServerTransmitter) clients.elementAt(i)).getUserName() != null)
+                if (clients.elementAt(i).getUserName() != null)
                     iSize++;
 
             reply.array = new String[iSize];
             int k = 0;
             for (int i = 0; i < clients.size(); i++)
-                if (((ServerTransmitter) clients.elementAt(i)).getUserName() != null)
-                    reply.array[k++] = ((ServerTransmitter) clients.elementAt(i)).getUserName();
+                if (clients.elementAt(i).getUserName() != null)
+                    reply.array[k++] = clients.elementAt(i).getUserName();
 
             t.sendObject(reply);
             report("GetOnlieUsersList status : " + Net.describeMessage(reply.Status));
@@ -270,7 +270,7 @@ public class ServerManager implements ConnectionsListenerCallback, TransmitterCa
             if (msg.UserName == null) { // sending text to general room for all clients
                 st.IsPrivate = false;
                 for (int i = 0; i < clients.size(); i++) {
-                    transmitter = (ServerTransmitter) (clients.elementAt(i));
+                    transmitter = (clients.elementAt(i));
                     if (transmitter.getUserName() != null)
                         if ((!transmitter.getUserName().equals(t.getUserName())) &&
                                 (t.getUserName() != null))
@@ -283,7 +283,7 @@ public class ServerManager implements ConnectionsListenerCallback, TransmitterCa
                 // searching for user...
                 boolean bUserFound = false;
                 for (int i = 0; i < clients.size(); i++) {
-                    transmitter = (ServerTransmitter) clients.elementAt(i);
+                    transmitter = clients.elementAt(i);
                     if (transmitter.getUserName().equals(msg.UserName)) {
                         // checking if your wants to speak with you
                         if (isUserIgnored(transmitter.getUserName(), t.getUserName())) {
@@ -382,13 +382,13 @@ public class ServerManager implements ConnectionsListenerCallback, TransmitterCa
         // searching & removing from client list
         for (int i = 0; i < clients.size(); i++)
             if (aTransmitter == clients.elementAt(i)) {
-                ServerTransmitter t = (ServerTransmitter) clients.elementAt(i);
+                ServerTransmitter tTransmitter = clients.elementAt(i);
                 // removing from list
                 clients.remove(i);
                 // notifiying all clients
-                UpdateUsersList updateUsersList = new UpdateUsersList(t.getUserName(), Net.USER_LEFT);
+                UpdateUsersList updateUsersList = new UpdateUsersList(tTransmitter.getUserName(), Net.USER_LEFT);
                 for (int j = 0; j < clients.size(); j++)
-                    ((ServerTransmitter) clients.elementAt(j)).sendObject(updateUsersList);
+                    clients.elementAt(j).sendObject(updateUsersList);
 
                 return;
             }

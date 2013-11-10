@@ -10,7 +10,7 @@ public class ReplyGetUsersIgnoredByMe extends GetUsersIgnoredByMe implements Ser
     /**
      * Ignored users list returned by server *
      */
-    public Vector ignoredUsersList = new Vector();
+    public Vector<String> ignoredUsersList = new Vector<String>();
     /**
      * If Status == 0, operation completed successfully *
      */

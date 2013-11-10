@@ -9,6 +9,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -89,9 +90,9 @@ public class Rooms extends JTabbedPane implements MouseListener, ChangeListener 
         Style regular = prc.doc.addStyle("regular", def);
         StyleConstants.setForeground(regular, Color.BLUE);
 
-        Style s = prc.doc.addStyle("bold", regular);
-        StyleConstants.setBold(s, true);
-        StyleConstants.setForeground(s, Color.red);
+        Style sstring = prc.doc.addStyle("bold", regular);
+        StyleConstants.setBold(sstring, true);
+        StyleConstants.setForeground(sstring, Color.red);
 
         //prc.ta = new JTextArea() ;
         //prc.ta.setName( aRoomName ) ;
@@ -183,9 +184,9 @@ public class Rooms extends JTabbedPane implements MouseListener, ChangeListener 
 
                 try {
                     if (aSystemText)
-                        doc.insertString(doc.getLength(), aText + "\n", doc.getStyle("bold"));
+                        doc.insertString(doc.getLength(), aText + " " + System.getProperty("line.separator")+ "  ", doc.getStyle("bold"));
                     else
-                        doc.insertString(doc.getLength(), aText + "\n", doc.getStyle("regular"));
+                        doc.insertString(doc.getLength(), aText + " " + System.getProperty("line.separator")+ " ", doc.getStyle("regular"));
 
                     // scrolling to the end
                     ((PrivateRoomContainer) getComponentAt(i)).scroll.getVerticalScrollBar().setValue(Integer.MAX_VALUE);
@@ -200,11 +201,11 @@ public class Rooms extends JTabbedPane implements MouseListener, ChangeListener 
      * Analog of addTextToRoom. Text will be added to the selected room *
      */
     public void addTextToCurrentRoom(String aText, boolean aSystem) {
-        Component c = getSelectedComponent();
-        if (c == null)
+        Component cCurrent = getSelectedComponent();
+        if (cCurrent == null)
             return;
 
-        addTextToRoom(c.getName(), aText, aSystem);
+        addTextToRoom(cCurrent.getName(), aText, aSystem);
     }
 
 
@@ -224,9 +225,9 @@ public class Rooms extends JTabbedPane implements MouseListener, ChangeListener 
         if (!(e.getSource() instanceof Component))
             return;
 
-        String s = ((Component) e.getSource()).getName();
+        String sstring = ((Component) e.getSource()).getName();
 
-        if (s.equals(CLOSE_BUTTON)) {
+        if (sstring.equals(CLOSE_BUTTON)) {
             if (roomActions != null)
                 if (!roomActions.canCloseRoom(getCurrentRoomName()))
                     return;
@@ -235,7 +236,7 @@ public class Rooms extends JTabbedPane implements MouseListener, ChangeListener 
             closeCurrentRoom();
         }
 
-        if (s.equals(IGNORE_BUTTON)) {
+        if (sstring.equals(IGNORE_BUTTON)) {
             if (roomActions != null)
                 roomActions.ignoreUserPressed(getCurrentRoomName());
         }

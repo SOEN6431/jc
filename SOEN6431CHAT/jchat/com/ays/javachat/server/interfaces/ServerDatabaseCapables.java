@@ -53,7 +53,7 @@ public interface ServerDatabaseCapables {
     /**
      * Stores ingnore list to the database.<br>Note : this functions must be sync.<br> Returns 0 in OK case, and error code <0 in case of errors *
      */
-    public int setIgnoreUsersList(String aUserName, Vector aIgnoredUsersList, boolean OverwriteExistingList);
+    public int setIgnoreUsersList(String aUserName, Vector<String> aIgnoredUsersList, boolean OverwriteExistingList);
 
     /**
      * Loads ingnore list from the database.<br>Note : this functions must be sync.<br> Returns 0 in OK case, and error code <0 in case of errors *

@@ -17,7 +17,7 @@ import java.util.Vector;
 public class ServerDatabase implements ServerDatabaseCapables {
     private String UsersFileName = null;
     private String IgnoreFileName = null;
-    private Properties p = new Properties();
+    private Properties pProperty = new Properties();
 
     private final String DATA_DIR = "./DATA/";
 
@@ -46,8 +46,8 @@ public class ServerDatabase implements ServerDatabaseCapables {
     }
 
     private void createFileIfNotExists(String aFileName) {
-        File f = new File(aFileName);
-        if (!f.exists()) {
+        File fFile = new File(aFileName);
+        if (!fFile.exists()) {
             try {
                 FileOutputStream stream = new FileOutputStream(aFileName);
                 stream.close();
@@ -186,7 +186,7 @@ public class ServerDatabase implements ServerDatabaseCapables {
     }
 
     // must be synch !!!!
-    public synchronized int setIgnoreUsersList(String aUserName, Vector aUsersList, boolean aOverwriteExistingList) {
+    public synchronized int setIgnoreUsersList(String aUserName, Vector<String> aUsersList, boolean aOverwriteExistingList) {
 
         if (aUsersList == null)
             return Net.OK;
@@ -208,10 +208,10 @@ public class ServerDatabase implements ServerDatabaseCapables {
         }
 
         // getting users which places to the ignore list
-        Vector v = (Vector) ignoredUsers.users.get(aUserName);
+        Vector<String> v = ignoredUsers.users.get(aUserName);
 
         if (v == null) { // ignore list is empty : creating
-            v = new Vector();
+            v = new Vector<String>();
             ignoredUsers.users.put(aUserName, v); // adding
         } else if (aOverwriteExistingList)
             v.clear();
@@ -268,7 +268,7 @@ public class ServerDatabase implements ServerDatabaseCapables {
             ignoredUsers = new IgnoredUsers2();
         }
 
-        Vector v = (Vector) ignoredUsers.users.get(aUserName);
+        Vector v = ignoredUsers.users.get(aUserName);
 
         if (v == null)
             return Net.OK;
