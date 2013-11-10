@@ -138,13 +138,13 @@ public class ServerDatabase implements ServerDatabaseCapables {
             if (iResult != Net.OK)
                 return iResult;
 
-            p.load(new FileInputStream(getUsersFileName()));
-            String s = p.getProperty(aLogin.UserName);
+            pProperty.load(new FileInputStream(getUsersFileName()));
+            String s = pProperty.getProperty(aLogin.UserName);
             if (s != null)
                 return Net.USER_ALREADY_EXISTS;
 
-            p.setProperty(aLogin.UserName, aLogin.Password);
-            p.store(new FileOutputStream(getUsersFileName()), null);
+            pProperty.setProperty(aLogin.UserName, aLogin.Password);
+            pProperty.store(new FileOutputStream(getUsersFileName()), null);
 
             return Net.OK;
         }

@@ -226,25 +226,24 @@ public class Dialogs {
 
                 String sInfo = "";
                 if (!chars2String(tf2.getPassword()).equals(chars2String(tf22.getPassword()))) {
-                    sInfo = "  " + System.getProperty("line.separator")+ "  ( wrong password confirmation )";
-                    
+                    sInfo = "\n( wrong password confirmation )";
                     bRetype = true;
                 }
 
                 if (!aLogin.isDataValid()) {
-                    sInfo = " " + System.getProperty("line.separator")+ "  ( " + aLogin.getLastErrorMessage() + ")";
+                    sInfo = "\n( " + aLogin.getLastErrorMessage() + ")";
                     bRetype = true;
                 }
 
                 if (!aDetails.isDataValid()) {
-                    sInfo = "    " + System.getProperty("line.separator")+ "   ( " + aDetails.getLastErrorMessage() + ")";
+                    sInfo = "\n( " + aDetails.getLastErrorMessage() + ")";
                     bRetype = true;
                 }
 
                 if (bRetype)
-                    if (JOptionPane.showConfirmDialog(null, "Data you have entered is invalid " + System.getProperty("line.separator")+ "  Click Yes if you want to reEnter it" + sInfo, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null) == 0){
-                   
-                    }else
+                    if (JOptionPane.showConfirmDialog(null, "Data you have entered is invalid\nClick Yes if you want to reEnter it" + sInfo, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null) == 0)
+                        ;
+                    else
                         return false;
                 else
                     return true;

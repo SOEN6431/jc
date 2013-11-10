@@ -727,7 +727,7 @@ public class ClientScreen implements ScreenCapables,
     // interface ScreenCapables
     public void connectionDown() {
         sLastLoggedOnUserName = null;
-        f.setTitle(PROGRAM_TITLE);
+        fframe.setTitle(PROGRAM_TITLE);
         setStatus("Disconnected from server", 0);
         list.removeAllUsers();
     }
