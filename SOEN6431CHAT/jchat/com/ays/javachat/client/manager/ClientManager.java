@@ -40,7 +40,6 @@ public class ClientManager implements ScreenCallback, TransmitterCallback {
     	boolean isAMessage = ((o instanceof ReplyLogin) ||
                 (o instanceof ReplyLogout) ||
                 (o instanceof ReplyRegister) ||
-                (o instanceof ReplyUnregister) ||
                 (o instanceof ReplyConnect) ||
                 (o instanceof ReplyDisconnect) ||
                 (o instanceof ReplyGetUserDetails) ||
@@ -50,7 +49,6 @@ public class ClientManager implements ScreenCallback, TransmitterCallback {
                 (o instanceof ReplyGetUsersIgnoredByMe) ||
                 (o instanceof ReplyClientText) ||
                 (o instanceof UpdateUsersList) ||
-                (o instanceof ServerNotification) ||
                 (o instanceof ServerText));
     	
     	if (isAMessage)

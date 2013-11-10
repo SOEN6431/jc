@@ -2,7 +2,7 @@ package com.ays.javachat.client.screen;
 
 import com.ays.javachat.client.interfaces.ScreenCallback;
 import com.ays.javachat.client.interfaces.ScreenCapables;
-import com.ays.javachat.common.datatypes.IPPort;
+
 import com.ays.javachat.common.datatypes.LoginData;
 import com.ays.javachat.common.datatypes.UserDetails;
 import com.ays.javachat.common.globalconsts.Net;
@@ -11,6 +11,7 @@ import com.ays.javachat.common.messages.*;
 import static com.ays.javachat.common.utils.StringUtils.isEmpty;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
@@ -27,32 +28,6 @@ public class ClientScreen implements ScreenCapables,
         KeyListener,
         RoomActions,
         OnlineListActions {
-    // program title
-    private final String PROGRAM_TITLE = "Chat client 1.1";
-
-    private final String GENERAL_ROOM = "General room";
-
-    // window pos & size
-    private final Dimension WINDOW_SIZE = new Dimension(800, 600);
-    private final Point WINDOW_POS = new Point(120, 80);
-
-    // Component names
-    private final String SEND_BUTTON = "Send Text Button";
-    private final String TEXT_LINE = "Send Text Line";
-
-
-    // menu constants
-    private final String menuCONNECT = "Connect";
-    private final String menuLOGIN = "Login";
-    private final String menuEXIT = "Exit";
-    private final String menuOPTIONS = "Options";
-    private final String menuABOUT = "About";
-    private final String menuREGISTER = "Register";
-    private final String menuUNREGISTER = "UnRegister";
-    private final String menuMyDetails = "View/Change my Details";
-    private final String menuManageIgnoreList = "Manage Ignore List";
-    private final String menuAbout = "About";
-
 
     // data exchange flags
     private final int flagShowUserDetails = 100; // Mesasge.InternalFlag, if == 100, means that client needs to show user details
@@ -60,35 +35,19 @@ public class ClientScreen implements ScreenCapables,
     private final int flagShowMyDetails = 102; // Mesasge.InternalFlag. if == 102, means that i need to get my details and view it
 
 
-    // object from ScreenCapables interface
-    private ScreenCallback screenCallback;
+    ClientScreenData data = new ClientScreenData(new ClientScreenFunctions(),
+			new Dimension(800, 600), new Point(120, 80),  
+			new JLabel("     Rooms"), new JLabel("     Online users"), new JLabel("     Type your message here"), new Rooms(this),
+			new OnlineList(this), new JTextField(), new JButton("Send"), new JPopupMenu()) ;
 
 
-    //
-    String sLastLoggedOnUserName = null;
-
-
-    // GUI controls
-    JLabel rooms = new JLabel("     Rooms");
-    JLabel peoples = new JLabel("     Online users");
-    JLabel typeyourmessage = new JLabel("     Type your message here");
-    Rooms tabs = new Rooms(this);
-    OnlineList list = new OnlineList(this);
-    JTextField tf = new JTextField();
-    JButton send = new JButton("Send");
-    JLabel statusBarLabel = new JLabel("Ready");
-    JFrame f = new JFrame();
-    JPanel MainPanel = new JPanel(new GridBagLayout());
-    JPopupMenu popupMenu = new JPopupMenu();
-
-
-    ///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTOR FUNCTIONS
     ///////////////////////////////////////////////////////////////////////////
     public ClientScreen(ScreenCallback aScreenCallback) {
-        screenCallback = aScreenCallback;
+        data.setScreenCallback(aScreenCallback);
 
-        if (screenCallback == null)
+        if (data.getScreenCallback() == null)
             return;
 
     }
@@ -97,14 +56,14 @@ public class ClientScreen implements ScreenCapables,
      * Shows and inits main frame *
      */
     public void start() {
-        show();
+        data.getClientScreenFunctions().getClientScreenBuildInit().show(data.getClientScreenFunctions().getF(), data.getClientScreenFunctions().getPROGRAM_TITLE(), data.getWINDOW_POS(), data.getWINDOW_SIZE(), this);
         init_tabs();
 
-        doConnect();
+        data.getClientScreenFunctions().doConnect(data.getScreenCallback());
     }
 
     private void init_tabs() {
-        tabs.openRoom(GENERAL_ROOM, false);
+        data.getTabs().openRoom(data.getGENERAL_ROOM(), false);
     }
 
 
@@ -124,17 +83,8 @@ public class ClientScreen implements ScreenCapables,
         return p;
     }
 
-    private JPanel getFlowPanel() {
-        JPanel p = new JPanel();
-        FlowLayout fl = new FlowLayout();
-        fl.setVgap(5);
-        fl.setHgap(5);
-        p.setLayout(fl);
-        return p;
-    }
-
-    private void buildScreen() {
-        statusBarLabel.setOpaque(true);
+    public void buildScreen() {
+        data.getClientScreenFunctions().getClientScreenBuildInit().getStatusBarLabel().setOpaque(true);
 
         GridBagConstraints c = new GridBagConstraints();
 
@@ -146,263 +96,95 @@ public class ClientScreen implements ScreenCapables,
         c.weighty = 0.8;
         c.gridwidth = GridBagConstraints.RELATIVE;
         p = getBorderPanel();
-        p.add(tabs, BorderLayout.CENTER);
-        p.add(rooms, BorderLayout.NORTH);
-        MainPanel.add(p, c);
+        p.add(data.getTabs(), BorderLayout.CENTER);
+        p.add(data.getRooms(), BorderLayout.NORTH);
+        data.getClientScreenFunctions().getClientScreenBuildInit().getMainPanel().add(p, c);
 
         c.weightx = 0.2;
         c.gridwidth = GridBagConstraints.REMAINDER;
         p = getBorderPanel();
-        p.add(list);
-        p.add(peoples, BorderLayout.NORTH);
-        MainPanel.add(p, c);
+        p.add(data.getList());
+        p.add(data.getPeoples(), BorderLayout.NORTH);
+        data.getClientScreenFunctions().getClientScreenBuildInit().getMainPanel().add(p, c);
 
         c.weightx = 0.8;
         c.weighty = 0.0;
         c.gridwidth = GridBagConstraints.RELATIVE;
         p = getBorderPanel();
-        p.add(tf);
-        p.add(typeyourmessage, BorderLayout.NORTH);
-        MainPanel.add(p, c);
+        p.add(data.getTf());
+        p.add(data.getTypeyourmessage(), BorderLayout.NORTH);
+        data.getClientScreenFunctions().getClientScreenBuildInit().getMainPanel().add(p, c);
 
         c.weightx = 0.2;
         c.gridwidth = GridBagConstraints.REMAINDER;
         p = getBorderPanel();
-        p.add(send);
-        MainPanel.add(p, c);
+        p.add(data.getSend());
+        data.getClientScreenFunctions().getClientScreenBuildInit().getMainPanel().add(p, c);
 
-        send.setToolTipText("Send message");
+        data.getSend().setToolTipText("Send message");
     }
 
-    private void buildMenu() {
+    public void buildMenu() {
         // menu
         JMenuBar menuBar = new JMenuBar();
         JMenu menu;
         JMenuItem menuItem;
 
-        f.setJMenuBar(menuBar);
+        data.getClientScreenFunctions().getF().setJMenuBar(menuBar);
 
         // File
         menu = new JMenu("File");
         menuBar.add(menu);
-        menuItem = new JMenuItem(menuCONNECT);
+        menuItem = new JMenuItem(data.getMenuCONNECT());
         menuItem.addActionListener(this);
         menu.add(menuItem);
         menu.addSeparator();
-        menuItem = new JMenuItem(menuLOGIN);
+        menuItem = new JMenuItem(data.getMenuLOGIN());
         menuItem.addActionListener(this);
         menu.add(menuItem);
         menu.addSeparator();
-        menuItem = new JMenuItem(menuREGISTER);
+        menuItem = new JMenuItem(data.getMenuREGISTER());
         menuItem.addActionListener(this);
         menu.add(menuItem);
-        /*
-        menuItem = new JMenuItem( menuUNREGISTER ) ;
-        menuItem.addActionListener( this ) ;
-        menu.add( menuItem ) ;
-        */
+        
         menu.addSeparator();
-        menuItem = new JMenuItem(menuEXIT);
+        menuItem = new JMenuItem(data.getMenuEXIT());
         menuItem.addActionListener(this);
         menu.add(menuItem);
 
         // View
         menu = new JMenu("View");
         menuBar.add(menu);
-        /*
-        menuItem = new JMenuItem( menuOPTIONS ) ;
-        menuItem.addActionListener( this ) ;
-        menu.add( menuItem ) ;
-        */
-        menuItem = new JMenuItem(menuMyDetails);
+     
+        menuItem = new JMenuItem(data.getMenuMyDetails());
         menuItem.addActionListener(this);
         menu.add(menuItem);
-        menuItem = new JMenuItem(menuManageIgnoreList);
+        menuItem = new JMenuItem(data.getMenuManageIgnoreList());
         menuItem.addActionListener(this);
         menu.add(menuItem);
 
         // Help
         menu = new JMenu("Help");
         menuBar.add(menu);
-        menuItem = new JMenuItem(menuABOUT);
+        menuItem = new JMenuItem(data.getMenuABOUT());
         menuItem.addActionListener(this);
         menu.add(menuItem);
     }
 
 
-    private void show() {
-        initComponents();
-        buildScreen();
-        buildMenu();
-
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().setLayout(new BorderLayout());
-        f.getContentPane().add(new JPanel(), BorderLayout.NORTH);
-        f.getContentPane().add(new JPanel(), BorderLayout.WEST);
-        f.getContentPane().add(statusBarLabel, BorderLayout.SOUTH);
-        f.getContentPane().add(new JPanel(), BorderLayout.EAST);
-        f.getContentPane().add(MainPanel, BorderLayout.CENTER);
-        f.setTitle(PROGRAM_TITLE);
-        f.setLocation(WINDOW_POS);
-        f.setSize(WINDOW_SIZE);
-        f.setVisible(true);
-    }
-
-
     // this func adds listeners to the compomnents, setted up names, blablabla...
-    private void initComponents() {
-        send.setName(SEND_BUTTON);
-        send.addMouseListener(this);
-        send.setFocusable(false);
+    public void initComponents() {
+        data.getSend().setName(data.getSEND_BUTTON());
+        data.getSend().addMouseListener(this);
+        data.getSend().setFocusable(false);
 
-        tf.setName(TEXT_LINE);
-        tf.addKeyListener(this);
+        data.getTf().setName(data.getTEXT_LINE());
+        data.getTf().addKeyListener(this);
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    // misc functions
-    ///////////////////////////////////////////////////////////////////////////
-    private void doConnect() {
-        IPPort ipport = new IPPort();
-        if (Dialogs.connectDialog(ipport)) {
-            ipport.save();
-            setStatus("Connecting to the " + ipport.IP + ":" + ipport.Port, 0);
-            screenCallback.connect(ipport);
-        }
-    }
-
-    private void doLogin() {
-        LoginData login = new LoginData("");
-        if (Dialogs.loginDialog(login)) {
-            setStatus("Trying to log in as a " + login.UserName, 0);
-            if (sLastLoggedOnUserName != null)
-                doLogout();
-            sLastLoggedOnUserName = login.UserName;
-
-            Login req = new Login(login);
-            int iStatus = screenCallback.sendRequest(req);
-
-            ReplyLogin reply;
-            if (iStatus != Net.OK) {
-                reply = new ReplyLogin(login, iStatus);
-                replyReceived(reply);
-            }
-        }
-    }
-
-    private void doLogout() {
-        sLastLoggedOnUserName = null;
-        f.setTitle(PROGRAM_TITLE);
-        Logout req = new Logout();
-        int iStatus = screenCallback.sendRequest(req);
-
-        ReplyLogout reply;
-        if (iStatus != Net.OK) {
-            reply = new ReplyLogout(iStatus);
-            replyReceived(reply);
-        }
-    }
-
-    private void doRegister() {
-        LoginData login = new LoginData("");
-        UserDetails details = new UserDetails();
-        if (Dialogs.registerDialog(login, details, false)) {
-            setStatus("Registering new user - " + login.UserName, 0);
-
-            Register req = new Register(login, details);
-            int iStatus = screenCallback.sendRequest(req);
-
-            ReplyRegister reply;
-            if (iStatus != Net.OK) {
-                reply = new ReplyRegister(login, details, iStatus);
-                replyReceived(reply);
-            }
-        }
-    }
-
-    private void doUnregister() {
-        UnRegister req = new UnRegister();
-        int iStatus = screenCallback.sendRequest(req);
-
-        ReplyUnregister reply;
-        if (iStatus != Net.OK) {
-            reply = new ReplyUnregister(iStatus);
-            replyReceived(reply);
-        }
-    }
-
-    private void doGetUserDetails(String aUserName, int aFlag) {
-        GetUserDetails req = new GetUserDetails(aUserName);
-        req.InternalFlag = aFlag;
-        int iStatus = screenCallback.sendRequest(req);
-
-        ReplyGetUserDetails reply;
-        if (iStatus != Net.OK) {
-            reply = new ReplyGetUserDetails(aUserName, null, iStatus);
-            replyReceived(reply);
-        }
-    }
-
-    private void doSetUserDetails(UserDetails details, String aPassword) {
-        SetUserDetails req = new SetUserDetails(details);
-        req.Password = aPassword;
-        int iStatus = screenCallback.sendRequest(req);
-
-        ReplySetUserDetails reply;
-        if (iStatus != Net.OK) {
-            reply = new ReplySetUserDetails(details, iStatus);
-            replyReceived(reply);
-        }
-    }
-
-    private void doGetOnlineUsersList() {
-        GetOnlineUsersList req = new GetOnlineUsersList();
-        int iStatus = screenCallback.sendRequest(req);
-
-        ReplyGetOnlineUsersList reply;
-        if (iStatus != Net.OK) {
-            reply = new ReplyGetOnlineUsersList(iStatus);
-            replyReceived(reply);
-        }
-    }
 
     private void doShowAbout() {
         Dialogs.aboutDialog();
-    }
-
-
-    private void doSendText(String aUserName, String aText) {
-        ClientText req = new ClientText(aUserName, aText);
-        int iStatus = screenCallback.sendRequest(req);
-
-        ReplyClientText reply;
-        if (iStatus != Net.OK) {
-            reply = new ReplyClientText(aUserName, aText, iStatus);
-            replyReceived(reply);
-        }
-    }
-
-    private void doManageIgnoreList() {
-        GetUsersIgnoredByMe req = new GetUsersIgnoredByMe();
-        int iStatus = screenCallback.sendRequest(req);
-
-        ReplyGetUsersIgnoredByMe reply;
-        if (iStatus != Net.OK) {
-            reply = new ReplyGetUsersIgnoredByMe(null, iStatus);
-            replyReceived(reply);
-        }
-    }
-
-    private void doIgnoreUsers(Vector aIgnoredUsersList, boolean aOverwriteExistingList) {
-        IgnoreUsers req = new IgnoreUsers(aIgnoredUsersList, aOverwriteExistingList);
-        int iStatus = screenCallback.sendRequest(req);
-
-        ReplyIgnoreUsers reply;
-        if (iStatus != Net.OK) {
-            reply = new ReplyIgnoreUsers(aIgnoredUsersList, aOverwriteExistingList, iStatus);
-            replyReceived(reply);
-        }
     }
 
 
@@ -416,23 +198,23 @@ public class ClientScreen implements ScreenCapables,
             // user joined
             case Net.USER_JOINED: {
                 UserDetails details = new UserDetails();
-                list.addUser(aUserName, details);
-                tabs.addTextToRoom(GENERAL_ROOM, "JOINED - " + aUserName, true);
+                data.getList().addUser(aUserName, details);
+                data.getTabs().addTextToRoom(data.getGENERAL_ROOM(), "JOINED - " + aUserName, true);
                 break;
             }
 
             // user left
             case Net.USER_LEFT: {
-                list.removeUser(aUserName);
-                tabs.addTextToRoom(GENERAL_ROOM, "LEFT - " + aUserName, true);
-                if (tabs.isRoomOpened(aUserName))
-                    tabs.addTextToRoom(aUserName, "USER LEFT", true);
+                data.getList().removeUser(aUserName);
+                data.getTabs().addTextToRoom(data.getGENERAL_ROOM(), "LEFT - " + aUserName, true);
+                if (data.getTabs().isRoomOpened(aUserName))
+                    data.getTabs().addTextToRoom(aUserName, "USER LEFT", true);
                 break;
             }
 
             // user updated his info
             case Net.USER_HASUPDATED_HISINFO: {
-                doGetUserDetails(aUserName, flagUpdateUserDetails);
+                data.getClientScreenFunctions().doGetUserDetails(aUserName, flagUpdateUserDetails, data.getScreenCallback(), this);
                 break;
             }
 
@@ -442,14 +224,14 @@ public class ClientScreen implements ScreenCapables,
 
     private void doReceiveServerText(String aFromUserName, boolean bIsPrivate, String aText) {
         if (!bIsPrivate)
-            tabs.addTextToRoom(GENERAL_ROOM, aFromUserName + " : " + aText, false);
+            data.getTabs().addTextToRoom(data.getGENERAL_ROOM(), aFromUserName + " : " + aText, false);
         else
-            tabs.addTextToRoom(aFromUserName, aFromUserName + " : " + aText, false);
+            data.getTabs().addTextToRoom(aFromUserName, aFromUserName + " : " + aText, false);
     }
 
 
     private void sendClicked() { // is a result of clicking on the SEND button
-        String s = tf.getText();
+        String s = data.getTf().getText();
 
         if (s == null)
             return;
@@ -457,52 +239,31 @@ public class ClientScreen implements ScreenCapables,
         if (s.length() < 1)
             return;
 
-        String text = sLastLoggedOnUserName;
+        String text = data.getClientScreenFunctions().getSLastLoggedOnUserName();
         if (isEmpty(text)) {
             text = "noname";
         }
-        text += " : " + tf.getText();
-        tabs.addTextToCurrentRoom(text, false);
+        text += " : " + data.getTf().getText();
+        data.getTabs().addTextToCurrentRoom(text, false);
 
-        String sUser = tabs.getCurrentRoomName();
-        if (sUser.equals(GENERAL_ROOM))
+        String sUser = data.getTabs().getCurrentRoomName();
+        if (sUser.equals(data.getGENERAL_ROOM()))
             sUser = null;
 
-        doSendText(sUser, s);
+        data.getClientScreenFunctions().doSendText(sUser, s, data.getScreenCallback(), this);
     }
 
     private void clearTextLine() {
-        tf.setText("");
+        data.getTf().setText("");
     }
-
-    // this function report action described in the aStatus in the status bar
-    private void setStatus(String aStatus, int aErrorCode) {
-
-        String s = "";
-        if (aErrorCode != Net.OK)
-            s = aStatus + ". Reason : " + Net.describeMessage(aErrorCode);
-        else
-            s = aStatus + "...";
-
-        if (aErrorCode != Net.OK) {
-            statusBarLabel.setForeground(Color.green);
-            statusBarLabel.setBackground(Color.red);
-        } else {
-            statusBarLabel.setForeground(Color.black);
-            statusBarLabel.setBackground(f.getBackground());
-        }
-
-        statusBarLabel.setText(s);
-    }
-
 
     private void showMyDetails(UserDetails aUserDetails) {
-        if (sLastLoggedOnUserName == null)
+        if (data.getClientScreenFunctions().getSLastLoggedOnUserName() == null)
             return;
 
-        LoginData login = new LoginData(sLastLoggedOnUserName);
+        LoginData login = new LoginData(data.getClientScreenFunctions().getSLastLoggedOnUserName());
         if (Dialogs.registerDialog(login, aUserDetails, true))
-            doSetUserDetails(aUserDetails, login.Password);
+            data.getClientScreenFunctions().doSetUserDetails(aUserDetails, login.Password, data.getScreenCallback(), this);
     }
 
     private void displayUserDetails(String aUserName, UserDetails aDetails) {
@@ -525,7 +286,7 @@ public class ClientScreen implements ScreenCapables,
             return;
 
         // send button clicked
-        if (s.equals(SEND_BUTTON)) {
+        if (s.equals(data.getSEND_BUTTON())) {
             sendClicked();
             clearTextLine();
         }
@@ -560,7 +321,7 @@ public class ClientScreen implements ScreenCapables,
     public void keyTyped(KeyEvent e) {
         Component c = (Component) e.getSource();
 
-        if (c.getName().equals(TEXT_LINE))
+        if (c.getName().equals(data.getTEXT_LINE()))
             if (e.getKeyChar() == KeyEvent.VK_ENTER) {
                 sendClicked();
                 clearTextLine();
@@ -568,34 +329,29 @@ public class ClientScreen implements ScreenCapables,
 
     }
 
-
     // interface ActionListener
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals(menuEXIT))
-            screenCallback.exit();
+        if (e.getActionCommand().equals(data.getMenuEXIT()))
+            data.getScreenCallback().exit();
 
-        if (e.getActionCommand().equals(menuOPTIONS))
-            ;
+        if (e.getActionCommand().equals(data.getMenuCONNECT()))
+            data.getClientScreenFunctions().doConnect(data.getScreenCallback());
 
-        if (e.getActionCommand().equals(menuCONNECT))
-            doConnect();
+        if (e.getActionCommand().equals(data.getMenuLOGIN()))
+            data.getClientScreenFunctions().doLogin(data.getScreenCallback(), this);
 
-        if (e.getActionCommand().equals(menuLOGIN))
-            doLogin();
+        if (e.getActionCommand().equals(data.getMenuREGISTER()))
+            data.getClientScreenFunctions().doRegister(data.getScreenCallback(), this);
 
-        if (e.getActionCommand().equals(menuREGISTER))
-            doRegister();
+        if (e.getActionCommand().equals(data.getMenuMyDetails()))
+            data.getClientScreenFunctions().doGetUserDetails("", flagShowMyDetails, data.getScreenCallback(), this);
 
-        if (e.getActionCommand().equals(menuMyDetails))
-            doGetUserDetails("", flagShowMyDetails);
+        if (e.getActionCommand().equals(data.getMenuManageIgnoreList()))
+            data.getClientScreenFunctions().doManageIgnoreList(data.getScreenCallback(), this);
 
-        if (e.getActionCommand().equals(menuManageIgnoreList))
-            doManageIgnoreList();
-
-        if (e.getActionCommand().equals(menuABOUT))
+        if (e.getActionCommand().equals(data.getMenuABOUT()))
             doShowAbout();
     }
-
 
     // interface ScreenCapables
     public void replyReceived(Message message) {
@@ -604,22 +360,22 @@ public class ClientScreen implements ScreenCapables,
         if (message instanceof ReplyConnect) {
             ReplyConnect reply = (ReplyConnect) message;
             if (reply.Status == Net.OK) {
-                setStatus("Connection established with " + reply.ipport.IP + ":" + reply.ipport.Port, 0);
-                doLogin();
+                data.getClientScreenFunctions().getClientScreenBuildInit().setStatus("Connection established with " + reply.ipport.IP + ":" + reply.ipport.Port, 0, data.getClientScreenFunctions().getF());
+                data.getClientScreenFunctions().doLogin(data.getScreenCallback(), this);
             } else
-                setStatus("Failed to connect to the " + reply.ipport.IP + ":" + reply.ipport.Port, reply.Status);
+                data.getClientScreenFunctions().getClientScreenBuildInit().setStatus("Failed to connect to the " + reply.ipport.IP + ":" + reply.ipport.Port, reply.Status, data.getClientScreenFunctions().getF());
         }
 
         // replyLogin
         if (message instanceof ReplyLogin) {
             ReplyLogin reply = (ReplyLogin) message;
             if (reply.Status == Net.OK) {
-                setStatus("Logged in as a " + reply.login.UserName, 0);
-                f.setTitle(PROGRAM_TITLE + " - " + sLastLoggedOnUserName);
-                doGetOnlineUsersList();
+                data.getClientScreenFunctions().getClientScreenBuildInit().setStatus("Logged in as a " + reply.login.UserName, 0, data.getClientScreenFunctions().getF());
+                data.getClientScreenFunctions().getF().setTitle(data.getClientScreenFunctions().getPROGRAM_TITLE() + " - " + data.getClientScreenFunctions().getSLastLoggedOnUserName());
+                data.getClientScreenFunctions().doGetOnlineUsersList(data.getScreenCallback(), this);
             } else {
-                setStatus("Failed to login as a " + reply.login.UserName, reply.Status);
-                f.setTitle(PROGRAM_TITLE);
+                data.getClientScreenFunctions().getClientScreenBuildInit().setStatus("Failed to login as a " + reply.login.UserName, reply.Status, data.getClientScreenFunctions().getF());
+                data.getClientScreenFunctions().getF().setTitle(data.getClientScreenFunctions().getPROGRAM_TITLE());
             }
         }
 
@@ -627,9 +383,9 @@ public class ClientScreen implements ScreenCapables,
         if (message instanceof ReplyRegister) {
             ReplyRegister reply = (ReplyRegister) message;
             if (reply.Status == Net.OK)
-                setStatus("Registered new user - " + reply.login.UserName, 0);
+                data.getClientScreenFunctions().getClientScreenBuildInit().setStatus("Registered new user - " + reply.login.UserName, 0, data.getClientScreenFunctions().getF());
             else
-                setStatus("Failed to register new user " + reply.login.UserName, reply.Status);
+                data.getClientScreenFunctions().getClientScreenBuildInit().setStatus("Failed to register new user " + reply.login.UserName, reply.Status, data.getClientScreenFunctions().getF());
         }
 
         // ReplyClientText
@@ -638,16 +394,16 @@ public class ClientScreen implements ScreenCapables,
             if (reply.Status == Net.OK)
                 ;
             else
-                tabs.addTextToCurrentRoom("Failed to send text. " + Net.describeMessage(reply.Status), true);//setStatus(  ) ;
+                data.getTabs().addTextToCurrentRoom("Failed to send text. " + Net.describeMessage(reply.Status), true);//setStatus(  ) ;
         }
 
         // replyGetOnlineUsersList
         if (message instanceof ReplyGetOnlineUsersList) {
             ReplyGetOnlineUsersList reply = (ReplyGetOnlineUsersList) message;
             if (reply.Status == Net.OK) {
-                list.removeAllUsers();
+                data.getList().removeAllUsers();
                 for (int i = 0; i < reply.array.length; i++)
-                    list.addUser(reply.array[i], new UserDetails());
+                    data.getList().addUser(reply.array[i], new UserDetails());
             }
         }
 
@@ -658,24 +414,24 @@ public class ClientScreen implements ScreenCapables,
                 switch (reply.InternalFlag) {
                     case flagShowMyDetails: {
                         showMyDetails(reply.details);
-                        break; //bbbbbbbbbbbbbbbbbbbbbbbbbbb
+                        break; 
                     }
                     case flagShowUserDetails: {
                         displayUserDetails(reply.UserName, reply.details);
-                        break; //bbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                        break; 
                     }
                 }
             } else
-                setStatus("Failed to obtain my details from server", reply.Status);
+                data.getClientScreenFunctions().getClientScreenBuildInit().setStatus("Failed to obtain my details from server", reply.Status, data.getClientScreenFunctions().getF());
         }
 
         // replySetUserDetails
         if (message instanceof ReplySetUserDetails) {
             ReplySetUserDetails reply = (ReplySetUserDetails) message;
             if (reply.Status == Net.OK)
-                setStatus("Details updates successfully", 0);
+                data.getClientScreenFunctions().getClientScreenBuildInit().setStatus("Details updates successfully", 0, data.getClientScreenFunctions().getF());
             else
-                setStatus("Failed to update details", reply.Status);
+                data.getClientScreenFunctions().getClientScreenBuildInit().setStatus("Failed to update details", reply.Status, data.getClientScreenFunctions().getF());
         }
 
         // replyGetUsersIgnoredByMe
@@ -683,33 +439,30 @@ public class ClientScreen implements ScreenCapables,
             ReplyGetUsersIgnoredByMe reply = (ReplyGetUsersIgnoredByMe) message;
             if (reply.Status == Net.OK) {
                 if (Dialogs.manageIgnoreUsersialog(reply.ignoredUsersList))
-                    doIgnoreUsers(reply.ignoredUsersList, true);
+                    data.getClientScreenFunctions().doIgnoreUsers(reply.ignoredUsersList, true, data.getScreenCallback(), this);
             } else
-                setStatus("Failed to get users list ignored by me", reply.Status);
+                data.getClientScreenFunctions().getClientScreenBuildInit().setStatus("Failed to get users list ignored by me", reply.Status, data.getClientScreenFunctions().getF());
         }
 
         // replyIgnoreUsers
         if (message instanceof ReplyIgnoreUsers) {
             ReplyIgnoreUsers reply = (ReplyIgnoreUsers) message;
             if (reply.Status == Net.OK)
-                setStatus("Updated successfully ignore list", 0);
+                data.getClientScreenFunctions().getClientScreenBuildInit().setStatus("Updated successfully ignore list", 0, data.getClientScreenFunctions().getF());
             else
-                setStatus("Failed to setup users list ignored by me", reply.Status);
+                data.getClientScreenFunctions().getClientScreenBuildInit().setStatus("Failed to setup users list ignored by me", reply.Status, data.getClientScreenFunctions().getF());
         }
 
         // UPDATE USERS LIST ( Server command )
-        if (message instanceof UpdateUsersList && !isEmpty(sLastLoggedOnUserName)) {
+        if (message instanceof UpdateUsersList && !isEmpty(data.getClientScreenFunctions().getSLastLoggedOnUserName())) {
             UpdateUsersList serverCmd = (UpdateUsersList) message;
             doUpdateUsersList(serverCmd.UserName, serverCmd.What);
         }
 
-        // SERVER NOTIFICATION
-        if (message instanceof ServerNotification && !isEmpty(sLastLoggedOnUserName)) {
-            ServerNotification serverCmd = (ServerNotification) message;
-        }
+   
 
         // SERVER TEXT
-        if (message instanceof ServerText && !isEmpty(sLastLoggedOnUserName)) {
+        if (message instanceof ServerText && !isEmpty(data.getClientScreenFunctions().getSLastLoggedOnUserName())) {
             ServerText serverCmd = (ServerText) message;
             doReceiveServerText(serverCmd.FromUser, serverCmd.IsPrivate, serverCmd.Text);
         }
@@ -719,10 +472,10 @@ public class ClientScreen implements ScreenCapables,
 
     // interface ScreenCapables
     public void connectionDown() {
-        sLastLoggedOnUserName = null;
-        f.setTitle(PROGRAM_TITLE);
-        setStatus("Disconnected from server", 0);
-        list.removeAllUsers();
+        data.getClientScreenFunctions().setSLastLoggedOnUserName(null);
+        data.getClientScreenFunctions().getF().setTitle(data.getClientScreenFunctions().getPROGRAM_TITLE());
+        data.getClientScreenFunctions().getClientScreenBuildInit().setStatus("Disconnected from server", 0, data.getClientScreenFunctions().getF());
+        data.getList().removeAllUsers();
     }
 
     // interface RoomActions
@@ -735,16 +488,16 @@ public class ClientScreen implements ScreenCapables,
 
     // interface RoomActions
     public boolean canCloseRoom(String aRoomName) {
-        if (aRoomName.equals(GENERAL_ROOM)) {
+        if (aRoomName.equals(data.getGENERAL_ROOM())) {
             if (JOptionPane.showConfirmDialog(null, "By clicking on the CLOSE button in the GENERAL ROOM you will exit from chat.\nExit from chat ?", "Exit chat dialog", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null) == 0)
-                screenCallback.exit();
+                data.getScreenCallback().exit();
             return false;
         }
         return true;
     }
 
     public void showUserDetails(String aUserName) {
-        doGetUserDetails(aUserName, flagShowUserDetails);
+        data.getClientScreenFunctions().doGetUserDetails(aUserName, flagShowUserDetails, data.getScreenCallback(), this);
     }
 
     public void userSelected(String aUserName) {
@@ -752,8 +505,8 @@ public class ClientScreen implements ScreenCapables,
 
     public void userDoubleSelected(String aUserName) {
         if (aUserName != null)
-            if (!aUserName.equals(sLastLoggedOnUserName))
-                tabs.openRoom(aUserName, false);
+            if (!aUserName.equals(data.getClientScreenFunctions().getSLastLoggedOnUserName()))
+                data.getTabs().openRoom(aUserName, false);
     }
 
     public void ignoreUser(String aUserName) {
@@ -762,6 +515,6 @@ public class ClientScreen implements ScreenCapables,
 
         Vector v = new Vector();
         v.addElement(aUserName);
-        doIgnoreUsers(v, false);
+        data.getClientScreenFunctions().doIgnoreUsers(v, false, data.getScreenCallback(), this);
     }
 }

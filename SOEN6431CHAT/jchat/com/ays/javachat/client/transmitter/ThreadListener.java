@@ -29,29 +29,26 @@ public class ThreadListener extends Thread {
         if (inputStream == null)
             ; // save_log() ;
 
-        Object o;
-        ObjectInputStream objectInputStream;
-
-        try {
-            objectInputStream = new ObjectInputStream(inputStream);
+       
+		try {
+			 dataListner();
         }
         catch (Exception e) {
             // save_log() ;
             transmitterCallback.connectionDown();
             return;
         }
-
-        while (true) {
-            try {
-                o = objectInputStream.readObject();
-            }
-            catch (Exception e) {
-                // save_log() ;
-                transmitterCallback.connectionDown();
-                return;
-            }
-
-            transmitterCallback.receiveObject(o);
-        }
     }
+
+
+	private void dataListner() throws java.io.IOException,
+			java.lang.ClassNotFoundException {
+		Object o;
+		ObjectInputStream objectInputStream;
+		objectInputStream = new ObjectInputStream(inputStream);
+		while (true) {
+			o = objectInputStream.readObject();
+			transmitterCallback.receiveObject(o);
+		}
+	}
 }

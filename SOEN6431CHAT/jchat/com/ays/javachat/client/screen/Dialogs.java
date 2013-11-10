@@ -5,6 +5,7 @@ import com.ays.javachat.common.datatypes.LoginData;
 import com.ays.javachat.common.datatypes.UserDetails;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -80,12 +81,12 @@ public class Dialogs {
         restoreDefaults.addMouseListener(
                 new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
-                        if (e.getButton() == MouseEvent.BUTTON1)
-                            if (JOptionPane.showConfirmDialog(null, "Restore defaults ?", "Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null) == 0) {
-                                aIPPort.setDefaults();
+                    	boolean aButton= e.getButton() == MouseEvent.BUTTON1 && JOptionPane.showConfirmDialog(null, "Restore defaults ?", "Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null) == 0;
+                        if(aButton){
+                    			aIPPort.setDefaults();
                                 tf1.setText(aIPPort.IP);
                                 tf2.setText(String.valueOf(aIPPort.Port));
-                            }
+                        }  
                     }
                 });
 
@@ -201,13 +202,8 @@ public class Dialogs {
 
         String buttons[] = {"OK", "Cancel"};
 
-        String sCaption;
-        if (aUpdate)
-            sCaption = "View/Change my details";
-        else
-            sCaption = "Register new user";
-
-        while (true) {
+        String sCaption = titleOfRegisterDialog(aUpdate);
+		while (true) {
             if (createSelf().showDialog(sCaption, panel, buttons)) {
                 aLogin.UserName = tf1.getText();
                 aLogin.Password = chars2String(tf2.getPassword());
@@ -241,14 +237,25 @@ public class Dialogs {
 
                 if (bRetype)
                     if (JOptionPane.showConfirmDialog(null, "Data you have entered is invalid\nClick Yes if you want to reEnter it" + sInfo, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null) == 0)
-                        ;
+                        ;//Yes Pressed
                     else
-                        return false;
+                        return false;// No Pressed
                 else
-                    return true;
+                    return true;//all data valid
+              
             } else return false; // cancel pressed
         }
     }
+
+	private static String titleOfRegisterDialog(boolean aUpdate) {
+		String sCaption;
+		sCaption = "Register new user";
+		if (aUpdate) {
+			sCaption = "View/Change my details";
+		} 
+		
+		return sCaption;
+	}
 
 
     /**
@@ -256,6 +263,7 @@ public class Dialogs {
      */
     public static void showUserDetailsDialog(String aUserName, UserDetails aDetails) {
         // building login and password screen
+    	
         JLabel l1 = new JLabel("User name :");
         JTextField tf1 = new JTextField(aUserName);
 
@@ -352,6 +360,8 @@ public class Dialogs {
 
         createSelf().showDialog("User details", panel, buttons);
     }
+    
+    
 
 
     /**
