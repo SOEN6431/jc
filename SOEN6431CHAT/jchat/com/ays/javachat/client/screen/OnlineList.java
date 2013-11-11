@@ -128,7 +128,7 @@ public class OnlineList extends JScrollPane implements MouseListener, ActionList
                 else {
                     doubleClickImp.stop();
                     doubleClickImp = null;                   
-                    if (getSelectedItem() != null)
+                    if (getSelectedItem() != null && onlineListActions != null)
                         onlineListActions.userDoubleSelected(getSelectedItem());
                 }
     			break;
