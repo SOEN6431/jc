@@ -37,21 +37,7 @@ public class ClientManager implements ScreenCallback, TransmitterCallback {
     // here is proccessing all logic of received messages
     private void ObjectReceived(Object o) {
     	
-    	boolean isAMessage = ((o instanceof ReplyLogin) ||
-                (o instanceof ReplyLogout) ||
-                (o instanceof ReplyRegister) ||
-                (o instanceof ReplyConnect) ||
-                (o instanceof ReplyDisconnect) ||
-                (o instanceof ReplyGetUserDetails) ||
-                (o instanceof ReplySetUserDetails) ||
-                (o instanceof ReplyGetOnlineUsersList) ||
-                (o instanceof ReplyIgnoreUsers) ||
-                (o instanceof ReplyGetUsersIgnoredByMe) ||
-                (o instanceof ReplyClientText) ||
-                (o instanceof UpdateUsersList) ||
-                (o instanceof ServerText));
-    	
-    	if (isAMessage)
+    	if (o instanceof Message)
     		clientScreen.replyReceived((Message) o);
     }
 
